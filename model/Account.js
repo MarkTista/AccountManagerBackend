@@ -7,7 +7,6 @@ const { Schema } = mongoose;
 const accountSchema = new Schema ({ //sto creando un nuovo schema 
         username: String,
         password: String,
-        email: String,
 });
 
 mongoose.model('accounts',accountSchema);

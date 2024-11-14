@@ -8,7 +8,6 @@ const Account = mongoose.model('accounts'); // questo mi servira a capire se pos
 
     module.exports = app =>{
 
-    
     app.get('/account', async (req,res)=>{
 
     const {rUsername, rPassword } = req.query;
@@ -21,23 +20,29 @@ const Account = mongoose.model('accounts'); // questo mi servira a capire se pos
     var useraccount = await Account.findOne({ username : rUsername}) // questo controllo mi serve per vedere se esistono gia altri usernmane con lo stesso nome
     if(useraccount == null)
     {
-        console.log("Crea un nuovo account");
+        
         var newAccount = new Account({
             username : rUsername,
             password : rPassword,
         });
+
     await newAccount.save();
     res.send(newAccount);
     return;
 
-    }else{
+    }else
+    {
         if(rPassword == useraccount.password) // vede se password coincide con quella gia inserita nel database
         {
+            console.log("Account esistente");
            await useraccount.save();
            res.send(useraccount);
            return;
-        }
-           
+        }    
     }
+    res.send("Password errata"); // questo viene mandato quando sbagli la password
+    return;
+
+
     });
 }
