@@ -1,12 +1,22 @@
-const mongoose = require('mongoose'); //importa il modulo mongoose
-const { Schema } = mongoose;
+const mongoose = require('mongoose'); // Importa il modulo mongoose
+const { Schema } = mongoose; // Estrai la classe Schema
 
-//In mongoose SChema è una classe che permette di definire la struttura dei documenti in una collezione di mongodb
-
-
-const accountSchema = new Schema ({ //sto creando un nuovo schema 
-        username: String,
-        password: String,
+// Definizione dello schema per l'inventario
+const inventoryItemSchema = new Schema({
+    itemName: { type: String, required: true }, 
+    quantity: { type: Number, default: 1 },    
 });
 
-mongoose.model('accounts',accountSchema);
+// Definizione dello schema per l'account
+const accountSchema = new Schema({
+    username: { type: String, required: true, unique: true }, 
+    password: { type: String, required: true },               
+    gameData: {                                               
+        coins: { type: Number, default: 100 },                   
+        level: { type: Number, default: 1 },                   
+        inventory: [inventoryItemSchema]                      
+    }
+});
+
+// Registra il modello nello schema 'accounts'
+mongoose.model('accounts', accountSchema);
